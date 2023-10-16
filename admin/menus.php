@@ -11,9 +11,7 @@ function mme_add_menus() {
         "Employees",
         "manage_options",
         "mme_manage_employees",
-        function () {
-            include(MEKATRON_MANAGE_EMPLOYEES_VIEW_PATH."list_employees.php");
-        }
+        'mme_render_list'
     );
 
     add_submenu_page(
@@ -27,6 +25,13 @@ function mme_add_menus() {
         }
     );
 
+}
+
+function mme_render_list() {
+    global $wpdb;
+    $table_dbname = $wpdb->prefix.'mme_employees';
+    $employees = $wpdb->get_results("SELECT * FROM $table_dbname ORDER BY CreatedDate DESC"); // return all data
+    include(MEKATRON_MANAGE_EMPLOYEES_VIEW_PATH."list_employees.php");
 }
 
 /*
