@@ -13,6 +13,7 @@ License: MIT
 defined('ABSPATH') || exit;
 
 define('MEKATRON_MANAGE_EMPLOYEES_ASSETS_URL', plugin_dir_url(__FILE__).'assets/');
+define('MEKATRON_MANAGE_EMPLOYEES_VIEW_PATH', plugin_dir_path(__FILE__).'view/');
 define('MEKATRON_MANAGE_EMPLOYEES_ADMIN_PATH', plugin_dir_path(__FILE__).'admin/');
 const MEKATRON_MANAGE_EMPLOYEES_CSS_URL = MEKATRON_MANAGE_EMPLOYEES_ASSETS_URL . 'css/';
 const MEKATRON_MANAGE_EMPLOYEES_JS_URL = MEKATRON_MANAGE_EMPLOYEES_ASSETS_URL . 'js/';
