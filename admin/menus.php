@@ -30,7 +30,15 @@ function mme_add_menus() {
 function mme_render_list() {
     global $wpdb;
     $table_dbname = $wpdb->prefix.'mme_employees';
-    $employees = $wpdb->get_results("SELECT * FROM $table_dbname ORDER BY CreatedDate DESC"); // return all data
+    $page = isset($_GET['pagenum']) ? absint($_GET['pagenum']) : 1;
+    $per_page = 10;
+    $limit = $per_page;
+    $offset = ($page - 1)*$per_page;
+    $employees = $wpdb->get_results(
+            "SELECT SQL_CALC_FOUND_ROWS * FROM $table_dbname ORDER BY CreatedDate DESC LIMIT $limit OFFSET $offset"
+    ); // return all data
+    $found_rows = $wpdb->get_var("SELECT FOUND_ROWS()");
+    $total_pages = ceil($found_rows/$per_page);
     include(MEKATRON_MANAGE_EMPLOYEES_VIEW_PATH."list_employees.php");
 }
 

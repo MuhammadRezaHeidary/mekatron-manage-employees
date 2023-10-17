@@ -86,7 +86,17 @@
 
 ?>
 <br>
-<?php ?>
+<?php
+$page_links = paginate_links([
+    'base'          => add_query_arg('pagenum', '%#%'),
+    'total'         => $total_pages,
+    'current'       => $page,
+    'prev_text'     => '«',
+    'next_text'     => '»',
+    'end_size'      => 1,
+    'mid_size'      => 1,
+]);
+?>
 <style>
     .mme-center {
         display: flex;
@@ -94,7 +104,6 @@
         align-items: center;
         margin-left: auto;
         margin-right: auto;
-        width: 80%;
     }
 
     table {
@@ -120,14 +129,52 @@
         background-color: #04AA6D;
         color: white;
     }
+
+    .pagination {
+        margin: 5px 0;
+
+    }
+
+    .pagination > * {
+        background:#dbdbdb;
+        width: 30px;
+        display: inline-flex;
+        height: 30px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        text-decoration: none;
+        color: black;
+
+    }
+
+    .pagination .current {
+        background: black;
+        color: white;
+    }
+
+    .pagination .page-numbers {
+        transition-property: background;
+        transition-duration: 1s;
+        transition-timing-function: cubic-bezier(0.77, 0.56, 0.24, 0.86);
+    }
+
+    .pagination .page-numbers:hover {
+        background: #686868;
+        color: white;
+    }
 </style>
 
 <h2>Employees</h2>
 
-<div class="mme-center">
-<!--    <table class="widefat">-->
-    <table>
-        <thead>
+<div class="wrap">
+    <div class="pagination">
+        <?php echo $page_links; ?>
+    </div>
+    <div class="mme-center">
+        <!--    <table class="widefat">-->
+        <table>
+            <thead>
             <tr>
                 <th>ID</th>
                 <th>Name</th>
@@ -136,35 +183,35 @@
                 <th>Birth Date</th>
                 <th>Creation Date</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             <?php
-                if($employees):
-                    foreach ($employees as $employee):
-            ?>
-            <tr>
-                <th scope="row"><?php echo $employee->ID;?></th>
-                <td><a href="<?php echo admin_url("admin.php?page=mme_manage_employees&id=$employee->ID"); ?>"><?php echo $employee->Fname . ' ' . $employee->Lname;?></a></td>
-                <td><?php echo $employee->Mission;?></td>
-                <td><?php echo $employee->Weight;?></td>
-                <td><?php echo $employee->BirthDate;?></td>
-                <td><?php echo $employee->CreatedDate;?></td>
-            </tr>
-            <?php
+            if($employees):
+                foreach ($employees as $employee):
+                    ?>
+                    <tr>
+                        <th scope="row"><?php echo $employee->ID;?></th>
+                        <td><a href="<?php echo admin_url("admin.php?page=mme_manage_employees_new&mme_id=$employee->ID"); ?>"><?php echo $employee->Fname . ' ' . $employee->Lname;?></a></td>
+                        <td><?php echo $employee->Mission;?></td>
+                        <td><?php echo $employee->Weight;?></td>
+                        <td><?php echo $employee->BirthDate;?></td>
+                        <td><?php echo $employee->CreatedDate;?></td>
+                    </tr>
+                <?php
                 endforeach;
-                else:
-            ?>
-            <tr>
-                <td colspan="6">
-                    ############### No data is available ###############
-                </td>
-            </tr>
+            else:
+                ?>
+                <tr>
+                    <td colspan="6">
+                        ############### No data is available ###############
+                    </td>
+                </tr>
             <?php
 
-                endif;
+            endif;
             ?>
-        </tbody>
-        <tfoot>
+            </tbody>
+            <tfoot>
             <tr>
                 <th>ID</th>
                 <th>Name</th>
@@ -173,10 +220,10 @@
                 <th>Birth Date</th>
                 <th>Creation Date</th>
             </tr>
-        </tfoot>
-    </table>
+            </tfoot>
+        </table>
+    </div>
+    <div class="pagination">
+        <?php echo $page_links; ?>
+    </div>
 </div>
-
-
-
-
