@@ -98,6 +98,11 @@ $page_links = paginate_links([
 ]);
 ?>
 <style>
+    @font-face {
+        font-family: "dirooz";
+        src: url("<?= MEKATRON_MANAGE_EMPLOYEES_FONTS_URL; ?>/Dirooz.ttf");
+    }
+
     .mme-center {
         display: flex;
         justify-content: center;
@@ -107,7 +112,6 @@ $page_links = paginate_links([
     }
 
     table {
-        font-family: Arial, Helvetica, sans-serif;
         border-collapse: collapse;
         width: 100%;
     }
@@ -116,6 +120,11 @@ $page_links = paginate_links([
         border: 1px solid #ddd;
         padding: 2px;
         text-align: center;
+        font-family: dirooz, "Times New Roman", Serif;
+    }
+
+    td > * {
+        text-decoration: none;
     }
 
     tr:nth-child(even){background-color: #f2f2f2;}
@@ -132,7 +141,6 @@ $page_links = paginate_links([
 
     .pagination {
         margin: 5px 0;
-
     }
 
     .pagination > * {
@@ -145,7 +153,6 @@ $page_links = paginate_links([
         border-radius: 4px;
         text-decoration: none;
         color: black;
-
     }
 
     .pagination .current {
@@ -182,6 +189,7 @@ $page_links = paginate_links([
                 <th>Weight</th>
                 <th>Birth Date</th>
                 <th>Creation Date</th>
+                <th>Operation</th>
             </tr>
             </thead>
             <tbody>
@@ -191,18 +199,24 @@ $page_links = paginate_links([
                     ?>
                     <tr>
                         <th scope="row"><?php echo $employee->ID;?></th>
-                        <td><a href="<?php echo admin_url("admin.php?page=mme_manage_employees_new&mme_id=$employee->ID"); ?>"><?php echo $employee->Fname . ' ' . $employee->Lname;?></a></td>
+                        <td><a href="<?php echo admin_url("admin.php?page=mme_manage_employees_new&employee_id=$employee->ID"); ?>"><?php echo $employee->Fname . ' ' . $employee->Lname;?></a></td>
                         <td><?php echo $employee->Mission;?></td>
                         <td><?php echo $employee->Weight;?></td>
                         <td><?php echo $employee->BirthDate;?></td>
                         <td><?php echo $employee->CreatedDate;?></td>
+                        <td>
+                            <a href="<?php echo admin_url("admin.php?page=mme_manage_employees&action=delete_employee&employee_id=" . $employee->ID); ?>"
+                                onclick="return confirm('Are you sure you want to permanently delete this record?');">
+                                <span class="dashicons dashicons-trash" style="text-decoration: none"></span>
+                            </a>
+                        </td>
                     </tr>
                 <?php
                 endforeach;
             else:
                 ?>
                 <tr>
-                    <td colspan="6">
+                    <td colspan="7">
                         ############### No data is available ###############
                     </td>
                 </tr>
@@ -219,6 +233,7 @@ $page_links = paginate_links([
                 <th>Weight</th>
                 <th>Birth Date</th>
                 <th>Creation Date</th>
+                <th>Operation</th>
             </tr>
             </tfoot>
         </table>
