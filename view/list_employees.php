@@ -127,6 +127,18 @@ $page_links = paginate_links([
         text-decoration: none;
     }
 
+    td > div > * {
+        text-decoration: none;
+    }
+
+    td.mme-operations {
+        display: flex;
+        justify-content:
+        space-evenly; border: none;
+        align-items: center;
+        height: 30px;
+    }
+
     tr:nth-child(even){background-color: #f2f2f2;}
     tr:nth-child(odd){background-color: #ffffff;}
 
@@ -189,7 +201,7 @@ $page_links = paginate_links([
                 <th>Weight</th>
                 <th>Birth Date</th>
                 <th>Creation Date</th>
-                <th>Operation</th>
+                <th>Operations</th>
             </tr>
             </thead>
             <tbody>
@@ -204,7 +216,15 @@ $page_links = paginate_links([
                         <td><?php echo $employee->Weight;?></td>
                         <td><?php echo $employee->BirthDate;?></td>
                         <td><?php echo $employee->CreatedDate;?></td>
-                        <td>
+                        <td class="mme-operations">
+                            <div>
+                                <a href="<?php echo admin_url("admin.php?page=mme_manage_employees&action=add_mission&employee_id=" . $employee->ID); ?>">
+                                    <span class="dashicons dashicons-plus"></span>
+                                </a>
+                                <a href="<?php echo admin_url("admin.php?page=mme_manage_employees&action=subtract_mission&employee_id=" . $employee->ID); ?>">
+                                    <span class="dashicons dashicons-minus"></span>
+                                </a>
+                            </div>
                             <a href="<?php echo admin_url("admin.php?page=mme_manage_employees&action=delete_employee&employee_id=" . $employee->ID); ?>"
                                 onclick="return confirm('Are you sure you want to permanently delete this record?');">
                                 <span class="dashicons dashicons-trash" style="text-decoration: none"></span>
@@ -233,7 +253,7 @@ $page_links = paginate_links([
                 <th>Weight</th>
                 <th>Birth Date</th>
                 <th>Creation Date</th>
-                <th>Operation</th>
+                <th>Operations</th>
             </tr>
             </tfoot>
         </table>

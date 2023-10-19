@@ -22,7 +22,6 @@ jQuery(document).ready(function ($) {
             let selected = background_uploader.state().get('selection').first().toJSON().url;
             console.log(selected);
             $('#avatar').val(selected);
-            $('#background-preview').attr('src',selected)
         });
 
         background_uploader.open();

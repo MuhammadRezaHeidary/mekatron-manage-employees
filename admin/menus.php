@@ -32,6 +32,7 @@ function mme_add_menus() {
 function mme_render_list() {
     global $wpdb;
     $table_dbname = $wpdb->prefix.'mme_employees';
+
     $page = isset($_GET['pagenum']) ? absint($_GET['pagenum']) : 1;
     $per_page = 10;
     $limit = $per_page;
@@ -45,14 +46,14 @@ function mme_render_list() {
 }
 
 function mme_process_list() {
+    global $wpdb;
+    $table_dbname = $wpdb->prefix.'mme_employees';
+
     if(isset($_GET['action'])
         && $_GET['action'] == "delete_employee"
         && isset($_GET['employee_id'])) {
 
         $employee_id = absint($_GET['employee_id']);
-
-        global $wpdb;
-        $table_dbname = $wpdb->prefix.'mme_employees';
 
         $format_id = [
             '%d',
@@ -67,15 +68,59 @@ function mme_process_list() {
 
         if($delete_action) {
             $status = 'deleted';
-            wp_redirect(admin_url('admin.php?page=mme_manage_employees&mme_status='.$status));
-            exit;
         }
         else {
             $status = 'deleted_error';
-            wp_redirect(admin_url('admin.php?page=mme_manage_employees&mme_status='.$status));
-            exit;
         }
+        wp_redirect(admin_url('admin.php?page=mme_manage_employees&mme_status='.$status));
+        exit;
     }
+    elseif(isset($_GET['action'])
+        && $_GET['action'] == "add_mission"
+        && isset($_GET['employee_id'])) {
+
+        $employee_id = absint($_GET['employee_id']);
+
+        //wpdb general query test
+//        $n_affected_or_selected_rows = $wpdb->query("
+//        UPDATE $table_dbname SET Mission = Mission + 1 , Weight = Weight + 0.35 WHERE ( ID = 19 ) OR ( Fname = 'رضا' AND Weight > 70 )
+//        ");
+
+        //wpdb general query test
+        $add_mission_action = $wpdb->query("
+            UPDATE $table_dbname SET Mission = Mission + 1 WHERE ID = $employee_id 
+        ");
+
+        if($add_mission_action) {
+            $status = 'add';
+        }
+        else {
+            $status = 'add_error';
+        }
+        wp_redirect(admin_url('admin.php?page=mme_manage_employees&mme_status='.$status));
+        exit;
+    }
+    elseif(isset($_GET['action'])
+        && $_GET['action'] == "subtract_mission"
+        && isset($_GET['employee_id'])) {
+
+        $employee_id = absint($_GET['employee_id']);
+
+        //wpdb general query test
+        $subtract_mission_action = $wpdb->query("
+            UPDATE $table_dbname SET Mission = Mission - 1 WHERE ID = $employee_id 
+        ");
+
+        if($subtract_mission_action) {
+            $status = 'subtract';
+        }
+        else {
+            $status = 'subtract_error';
+        }
+        wp_redirect(admin_url('admin.php?page=mme_manage_employees&mme_status='.$status));
+        exit;
+    }
+
 }
 
 function mme_render_form() {
@@ -234,6 +279,22 @@ function mme_notices() {
         elseif($status == 'deleted') {
             $message = "Employee deleted successfully";
             $type = 'warning';
+        }
+        elseif($status == 'add') {
+            $message = "Employee missions increased successfully";
+            $type = 'info';
+        }
+        elseif($status == 'subtract') {
+            $message = "Employee missions decreased successfully";
+            $type = 'info';
+        }
+        elseif($status == 'subtract_error') {
+            $message = "Error in decreasing employee missions";
+            $type = 'error';
+        }
+        elseif($status == 'add_error') {
+            $message = "Error in increasing employee missions";
+            $type = 'error';
         }
         elseif($status == 'deleted_error') {
             $message = "Error in deleting employee";
